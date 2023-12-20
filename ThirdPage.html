@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Простая игра</title>
+    <style>
+        #game-container {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+            position: relative;
+        }
+
+        .square {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Простая игра</h1>
+    <p>Нажмите на квадраты, чтобы заработать очки.</p>
+    <p id="score">Счет: 0</p>
+
+    <div id="game-container">
+    </div>
+
+    <script>
+        var score = 0;
+
+        function createSquare() {
+            var square = document.createElement("div");
+            square.className = "square";
+            square.style.left = Math.random() * 350 + "px";
+            square.style.top = Math.random() * 350 + "px";
+            square.addEventListener("click", function () {
+                score++;
+                document.getElementById("score").textContent = "Счет: " + score;
+                this.parentNode.removeChild(this);
+            });
+
+            document.getElementById("game-container").appendChild(square);
+        }
+
+        setInterval(createSquare, 1000);
+    </script>
+</body>
+</html>

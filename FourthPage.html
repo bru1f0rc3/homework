@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Игра с перемещением</title>
+    <style>
+        #game-container {
+            width: 400px;
+            height: 400px;
+            border: 1px solid black;
+            position: relative;
+        }
+
+        #player {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Игра с перемещением</h1>
+    <p>Используйте клавиши со стрелками для перемещения квадрата.</p>
+
+    <div id="game-container">
+        <div id="player"></div>
+    </div>
+
+    <script>
+        var player = document.getElementById("player");
+        var container = document.getElementById("game-container");
+
+        var playerX = 0;
+        var playerY = 0;
+        var containerWidth = container.clientWidth;
+        var containerHeight = container.clientHeight;
+        var squareSize = 50;
+
+        function movePlayer(direction) {
+            var stepSize = 50;
+
+            switch (direction) {
+                case "ArrowUp":
+                    if (playerY - stepSize >= 0) {
+                        playerY -= stepSize;
+                    }
+                    break;
+                case "ArrowDown":
+                    if (playerY + squareSize + stepSize <= containerHeight) {
+                        playerY += stepSize;
+                    }
+                    break;
+                case "ArrowLeft":
+                    if (playerX - stepSize >= 0) {
+                        playerX -= stepSize;
+                    }
+                    break;
+                case "ArrowRight":
+                    if (playerX + squareSize + stepSize <= containerWidth) {
+                        playerX += stepSize;
+                    }
+                    break;
+            }
+
+            player.style.top = playerY + "px";
+            player.style.left = playerX + "px";
+        }
+
+        document.addEventListener("keydown", function (event) {
+            movePlayer(event.key);
+        });
+    </script>
+</body>
+</html>
