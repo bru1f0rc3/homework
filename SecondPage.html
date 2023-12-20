@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вторая мини-игра</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        #game-container {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            width: 80%;
+            height: calc(100% - 60px);
+            border: 2px solid #333;
+        }
+
+        .circle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        var score = 0;
+
+        function startGame() {
+            var gameContainer = document.getElementById('game-container');
+            gameContainer.innerHTML = '';
+
+            for (var i = 0; i < 10; i++) {
+                var circle = document.createElement('div');
+                circle.className = 'circle';
+                circle.style.top = getRandomPosition(gameContainer.clientHeight - 50) + 'px';
+                circle.style.left = getRandomPosition(gameContainer.clientWidth - 50) + 'px';
+                circle.onclick = function() {
+                    incrementScore();
+                    this.style.display = 'none';
+                };
+                gameContainer.appendChild(circle);
+            }
+        }
+
+        function getRandomPosition(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        function incrementScore() {
+            score++;
+            document.getElementById('score').textContent = score;
+        }
+    </script>
+</head>
+<body>
+    <button onclick="startGame()">Начать игру</button>
+    <div id="game-container"></div>
+    <div>Очки: <span id="score">0</span></div>
+</body>
+</html>
