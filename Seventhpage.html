@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #userGuess {
+            font-size: 24px;
+        }
+
+        #result {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Угадай число</title>
+</head>
+
+<body>
+
+    <h2>Угадайте число от 1 до 20:</h2>
+    <input type="number" id="userGuess">
+    <button onclick="checkGuess()">Проверить</button>
+    <p id="result"></p>
+
+    <script>
+        var secretNumber = Math.floor(Math.random() * 20) + 1;
+
+        function checkGuess() {
+            var userGuess = parseInt(document.getElementById('userGuess').value);
+
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 20) {
+                alert('Введите число от 1 до 20.');
+                return;
+            }
+
+            if (userGuess === secretNumber) {
+                document.getElementById('result').innerHTML = 'Поздравляем, вы угадали!';
+            } else {
+                document.getElementById('result').innerHTML = userGuess < secretNumber ? 'Больше!' : 'Меньше!';
+            }
+        }
+    </script>
+
+</body>
+
+</html>
