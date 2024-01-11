@@ -1,120 +1,58 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Игра "Управляйте ракетой"</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        #game-container {
-            width: 400px;
-            height: 400px;
-            border: 1px solid black;
-            position: relative;
+        body {
+            text-align: center;
         }
 
-        #rocket {
-            width: 50px;
-            height: 50px;
-            background-color: red;
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: left 0.2s ease-in-out;
-        }
-
-        .obstacle {
-            width: 50px;
-            height: 50px;
-            background-color: blue;
-            position: absolute;
+        button {
+            font-size: 20px;
+            margin: 10px;
+            padding: 10px 20px;
         }
     </style>
+    <title>Камень, ножницы, бумага</title>
 </head>
-<body>
-    <h1>Игра "Управляйте ракетой"</h1>
-    <p>Используйте клавиши влево и вправо для управления ракетой.</p>
 
-    <div id="game-container">
-        <div id="rocket"></div>
-    </div>
+<body>
+
+    <h2>Выберите: Камень, Ножницы, или Бумага</h2>
+    <button onclick="game('камень')">Камень</button>
+    <button onclick="game('ножницы')">Ножницы</button>
+    <button onclick="game('бумага')">Бумага</button>
+
+    <p id="result"></p>
 
     <script>
-        var rocket = document.getElementById("rocket");
-        var container = document.getElementById("game-container");
-        var containerWidth = container.clientWidth;
-        var rocketSize = rocket.offsetWidth;
-        var rocketX = (containerWidth - rocketSize) / 2;
-        var rocketSpeed = 2;
-        var obstacleInterval;
-        var score = 0;
-        var keyState = {};
+        function game(userChoice) {
+            var choices = ['камень', 'бумага', 'ножницы'];
+            var computerChoice = choices[Math.floor(Math.random() * 3)];
 
-        function moveRocket() {
-            var stepSize = rocketSpeed;
+            var result = '';
 
-            if (keyState.ArrowLeft) {
-                rocketX -= stepSize;
-            } else if (keyState.ArrowRight) {
-                rocketX += stepSize;
+            if (userChoice === computerChoice) {
+                result = 'Ничья!';
+            } else if ((userChoice === 'камень' && computerChoice === 'ножницы') ||
+                (userChoice === 'ножницы' && computerChoice === 'бумага') ||
+                (userChoice === 'бумага' && computerChoice === 'камень')) {
+                result = 'Вы победили!';
+            } else {
+                result = 'Вы проиграли!';
             }
 
-            // Проверяем, чтобы ракета не выходила за границы контейнера
-            if (rocketX < 0) {
-                rocketX = 0;
-            } else if (rocketX + rocketSize > containerWidth) {
-                rocketX = containerWidth - rocketSize;
-            }
+            document.getElementById('result').innerHTML = 'Вы выбрали ' + userChoice + ', компьютер выбрал ' + computerChoice + '. ' + result;
 
-            rocket.style.left = rocketX + "px";
+            // Обнуление результата после вывода
+            setTimeout(function () {
+                document.getElementById('result').innerHTML = '';
+            }, 5000);
         }
-
-        function createObstacle() {
-            var obstacle = document.createElement("div");
-            obstacle.className = "obstacle";
-            obstacle.style.left = Math.random() * (containerWidth - 50) + "px";
-            obstacle.style.top = -50 + "px";
-            container.appendChild(obstacle);
-
-            var obstacleIntervalId = setInterval(function () {
-                var obstacleTop = obstacle.offsetTop;
-                obstacleTop += rocketSpeed;
-                obstacle.style.top = obstacleTop + "px";
-
-                // Проверяем столкновение с ракетой
-                if (
-                    obstacleTop + obstacle.offsetHeight >=
-                    container.offsetHeight - rocket.offsetHeight &&
-                    obstacleTop <=
-                    container.offsetHeight - rocket.offsetHeight + rocketSpeed &&
-                    rocketX + rocket.offsetWidth >= obstacle.offsetLeft &&
-                    rocketX <= obstacle.offsetLeft + obstacle.offsetWidth
-                ) {
-                    clearInterval(obstacleIntervalId);
-                    clearInterval(obstacleInterval);
-                    alert("Игра окончена! Ваш счет: " + score);
-                }
-
-                // Удаляем препятствие, если оно вышло за пределы контейнера
-                if (obstacleTop > container.offsetHeight) {
-                    container.removeChild(obstacle);
-                    score++;
-                }
-            }, 20);
-        }
-
-        // Обработчики событий нажатия и отпускания клавиш
-        document.addEventListener("keydown", function (event) {
-            keyState[event.key] = true;
-            if (keyState.ArrowLeft || keyState.ArrowRight) {
-                rocketSpeed = 10;
-            }
-        });
-
-        document.addEventListener("keyup", function (event) {
-            keyState[event.key] = false;
-            rocketSpeed = 2;
-        });
-
-        obstacleInterval = setInterval(createObstacle, 2000);
-        setInterval(moveRocket, 10);
     </script>
+
 </body>
+
 </html>

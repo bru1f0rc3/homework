@@ -7,45 +7,52 @@
     <style>
         body {
             text-align: center;
-            font-family: Arial, sans-serif;
         }
 
-        #userGuess {
-            font-size: 24px;
+        #word {
+            font-size: 30px;
         }
 
-        #result {
+        #userInput {
             font-size: 20px;
-            margin-top: 10px;
         }
     </style>
-    <title>Угадай число</title>
+    <title>Клавиатурный спринт</title>
 </head>
 
 <body>
 
-    <h2>Угадайте число от 1 до 20:</h2>
-    <input type="number" id="userGuess">
-    <button onclick="checkGuess()">Проверить</button>
-    <p id="result"></p>
+    <h2>Напишите слово как можно быстрее (с учетом заглавных букв):</h2>
+    <p id="word"></p>
+    <input type="text" id="userInput" oninput="checkInput()">
+    <p id="sprintResult"></p>
 
     <script>
-        var secretNumber = Math.floor(Math.random() * 20) + 1;
+        var words = ['Спринт', '225 группа', 'group225', 'Веб-разработка', 'Алгоритм', 'Программирование', 'Эксперт', 'Стартап', 'Код', 'Технология'];
+        var targetWord;
+        var startTime;
 
-        function checkGuess() {
-            var userGuess = parseInt(document.getElementById('userGuess').value);
+        function startGame() {
+            targetWord = words[Math.floor(Math.random() * words.length)];
+            document.getElementById('word').innerHTML = targetWord;
+            document.getElementById('userInput').value = '';
+            document.getElementById('sprintResult').innerHTML = '';
+            document.getElementById('userInput').focus();
+            startTime = new Date().getTime();
+        }
 
-            if (isNaN(userGuess) || userGuess < 1 || userGuess > 20) {
-                alert('Введите число от 1 до 20.');
-                return;
-            }
+        function checkInput() {
+            var userInput = document.getElementById('userInput').value;
 
-            if (userGuess === secretNumber) {
-                document.getElementById('result').innerHTML = 'Поздравляем, вы угадали!';
-            } else {
-                document.getElementById('result').innerHTML = userGuess < secretNumber ? 'Больше!' : 'Меньше!';
+            if (userInput === targetWord) {
+                var endTime = new Date().getTime();
+                var timeTaken = (endTime - startTime) / 1000;
+                document.getElementById('sprintResult').innerHTML = 'Вы ввели слово за ' + timeTaken + ' секунд!';
+                setTimeout(startGame, 2000); // Задержка перед следующей игрой (2 секунды)
             }
         }
+
+        startGame(); // Запуск первой игры при загрузке страницы
     </script>
 
 </body>

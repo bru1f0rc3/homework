@@ -7,49 +7,44 @@
     <style>
         body {
             text-align: center;
+            font-family: Arial, sans-serif;
         }
 
-        button {
+        #userGuess {
+            font-size: 24px;
+        }
+
+        #result {
             font-size: 20px;
-            margin: 10px;
-            padding: 10px 20px;
+            margin-top: 10px;
         }
     </style>
-    <title>Камень, ножницы, бумага</title>
+    <title>Угадай число</title>
 </head>
 
 <body>
 
-    <h2>Выберите: Камень, Ножницы, или Бумага</h2>
-    <button onclick="game('камень')">Камень</button>
-    <button onclick="game('ножницы')">Ножницы</button>
-    <button onclick="game('бумага')">Бумага</button>
-
+    <h2>Угадайте число от 1 до 20:</h2>
+    <input type="number" id="userGuess">
+    <button onclick="checkGuess()">Проверить</button>
     <p id="result"></p>
 
     <script>
-        function game(userChoice) {
-            var choices = ['камень', 'бумага', 'ножницы'];
-            var computerChoice = choices[Math.floor(Math.random() * 3)];
+        var secretNumber = Math.floor(Math.random() * 20) + 1;
 
-            var result = '';
+        function checkGuess() {
+            var userGuess = parseInt(document.getElementById('userGuess').value);
 
-            if (userChoice === computerChoice) {
-                result = 'Ничья!';
-            } else if ((userChoice === 'камень' && computerChoice === 'ножницы') ||
-                (userChoice === 'ножницы' && computerChoice === 'бумага') ||
-                (userChoice === 'бумага' && computerChoice === 'камень')) {
-                result = 'Вы победили!';
-            } else {
-                result = 'Вы проиграли!';
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 20) {
+                alert('Введите число от 1 до 20.');
+                return;
             }
 
-            document.getElementById('result').innerHTML = 'Вы выбрали ' + userChoice + ', компьютер выбрал ' + computerChoice + '. ' + result;
-
-            // Обнуление результата после вывода
-            setTimeout(function () {
-                document.getElementById('result').innerHTML = '';
-            }, 5000);
+            if (userGuess === secretNumber) {
+                document.getElementById('result').innerHTML = 'Поздравляем, вы угадали!';
+            } else {
+                document.getElementById('result').innerHTML = userGuess < secretNumber ? 'Больше!' : 'Меньше!';
+            }
         }
     </script>
 
